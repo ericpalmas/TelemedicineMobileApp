@@ -8,7 +8,10 @@ import {
 export const listPatients = () => async dispatch => {
   try {
     dispatch({type: PATIENT_LIST_REQUEST});
-    const {data} = await axios.get('http://192.168.1.103:5000/api/patients');
+    //const {data} = await axios.get('http://192.168.1.103:5000/api/patients');
+    const {data} = await axios.get(
+      'https://telemedicinemobile.herokuapp.com/api/patients',
+    );
 
     dispatch({
       type: PATIENT_LIST_SUCCESS,

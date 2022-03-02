@@ -9,8 +9,13 @@ export const checkInTimeSlot = info => async dispatch => {
   try {
     dispatch({type: CHECK_IN_TIME_SLOT_REQUEST});
 
+    // const {data} = await axios.put(
+    //   `http://192.168.1.103:5000/api/timeSlots`,
+    //   info,
+    // );
+
     const {data} = await axios.put(
-      `http://192.168.1.103:5000/api/timeSlots`,
+      `https://telemedicinemobile.herokuapp.com/api/timeSlots`,
       info,
     );
 
