@@ -1,6 +1,7 @@
 {
   "build": {
-    "production": {
+    "preview": {
+      "distribution": "internal",
       "env": {
         "PORT": "5000",
         "MONGO_URI": "mongodb+srv://ericpalmas:palmas1996@telemedicineplatform.eoy8r.mongodb.net/TelemedicinePlatform?retryWrites=true&w=majority"
