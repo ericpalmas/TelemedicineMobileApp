@@ -4,7 +4,6 @@
   "private": true,
   "main": "server.js",
   "proxy": "http://127.0.0.1:5000",
-
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -14,7 +13,6 @@
     "server": "npx nodemon backend/server.js",
     "dev": "concurrently \"npm run server\" \"npm run start\" \"npx react-native run-android\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build"
-
   },
   "dependencies": {
     "@react-native-community/checkbox": "^0.5.2",
@@ -36,6 +34,7 @@
     "express-async-handler": "^1.1.4",
     "macaddress": "^0.5.2",
     "mongoose": "^5.13.7",
+    "path": "^0.12.7",
     "react": "17.0.1",
     "react-bootstrap": "^2.0.0-beta.4",
     "react-native": "^0.65.1",

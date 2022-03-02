@@ -1,11 +1,12 @@
 const express = require('express');
+const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const colors = require('colors');
 const {notFound, errorHandler} = require('./middleware/errorMiddleware');
-// const patientRoutes = require('./routes/patientRoutes');
-// const surveyRoutes = require('./routes/surveyRoutes');
-// const timeSlotRoutes = require('./routes/timeSlotRoutes');
+const patientRoutes = require('./routes/patientRoutes');
+const surveyRoutes = require('./routes/surveyRoutes');
+const timeSlotRoutes = require('./routes/timeSlotRoutes');
 
 const app = express();
 
@@ -14,13 +15,16 @@ dotenv.config();
 connectDB();
 
 app.use(express.json());
-// app.use('/api/patients', patientRoutes);
-// app.use('/api/surveys', surveyRoutes);
-// app.use('/api/timeSlots', timeSlotRoutes);
-
-app.get('/dreamforce', function (req, res) {
+app.get('/', function (req, res) {
   res.status(200).json({message: 'hello telemedicine'});
 });
+app.use('/api/patients', patientRoutes);
+app.use('/api/surveys', surveyRoutes);
+app.use('/api/timeSlots', timeSlotRoutes);
+
+// app.get('/', function (req, res) {
+//   res.status(200).json({message: 'hello telemedicine'});
+// });
 
 app.use(notFound);
 app.use(errorHandler);
