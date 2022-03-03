@@ -4,20 +4,19 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useState} from 'react';
-
 import {surveyDetails} from './frontend/actions/surveyActions';
-import QuestionsContainer from './frontend/components/QuestionsContainer';
 import DeviceInfo from 'react-native-device-info';
+import QuestionsContainer from './frontend/components/QuestionsContainer';
 
 function App() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const patientSurvey = useSelector(state => state.survey);
-  const {loading, error, survey} = patientSurvey;
+  // const patientSurvey = useSelector(state => state.survey);
+  // const {loading, error, survey} = patientSurvey;
 
-  useEffect(() => {
-    dispatch(surveyDetails(DeviceInfo.getUniqueId()));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(surveyDetails(DeviceInfo.getUniqueId()));
+  // }, [dispatch]);
 
   return <QuestionsContainer />;
 }

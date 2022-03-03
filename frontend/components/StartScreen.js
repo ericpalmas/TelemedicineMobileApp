@@ -12,10 +12,11 @@ const StartScreen = ({navigation, route}) => {
   //const {completed} = route.params;
 
   //var completed = route.params.completed !== undefined ? true : false;
+
+  //const [update, setUpdate] = useState(false);
   var answers = [];
 
   const dispatch = useDispatch();
-  const [update, setUpdate] = useState(false);
 
   const patientSurvey = useSelector(state => state.survey);
   const {loading, error, survey} = patientSurvey;
@@ -52,10 +53,28 @@ const StartScreen = ({navigation, route}) => {
           navigation.navigate('Open', {index: 0, survey, answers});
       } else if (checkSlots.alreadyResponse) {
         alert('ALREADY ANSWERED IN THIS TIME SLOT');
-        if (survey !== undefined) dispatch(checkInTimeSlot(survey.survey));
+        if (survey !== undefined) {
+          var info = {
+            surveyId: survey.survey,
+            uniqueId: DeviceInfo.getUniqueId(),
+          };
+          dispatch(checkInTimeSlot(info));
+          // .then(() => {
+          //   setUpdate(true);
+          // });
+        }
       } else if (!checkSlots.inTimeSlot) {
         alert('AT THIS MOMENT YOU CANNOT ANSWER');
-        if (survey !== undefined) dispatch(checkInTimeSlot(survey.survey));
+        if (survey !== undefined) {
+          var info = {
+            surveyId: survey.survey,
+            uniqueId: DeviceInfo.getUniqueId(),
+          };
+          dispatch(checkInTimeSlot(info));
+          // .then(() => {
+          //   setUpdate(true);
+          // });
+        }
       }
     }
   };
@@ -70,20 +89,39 @@ const StartScreen = ({navigation, route}) => {
         surveyId: survey.survey,
         uniqueId: DeviceInfo.getUniqueId(),
       };
-      dispatch(checkInTimeSlot(info)).then(() => {
-        setUpdate(true);
-      });
+      dispatch(checkInTimeSlot(info));
+
+      // .then(() => {
+      //   setUpdate(true);
+      // });
     }
-  }, [survey, navigation, loading, update, route.params?.completed]);
+  }, [dispatch, survey, route.params?.completed]);
+
+  useEffect(() => {
+    console.log(survey.survey);
+    console.log(checkSlots.alreadyResponse);
+    console.log(checkSlots.inTimeSlot);
+  }, [survey, checkSlots]);
 
   return (
     <View style={styles.containerMain}>
-      {/* question text area*/}
-      {loading ? (
+      {loading || loadingCheckTimeSlot ? (
         <Loader />
       ) : error ? (
         <>
-          <Message variant="danger">{error}</Message>
+          <Message variant="danger">{error} </Message>
+          <View>
+            <Text
+              style={{
+                fontSize: 13,
+              }}>
+              {DeviceInfo.getUniqueId()}
+            </Text>
+          </View>
+        </>
+      ) : errorCheckTimeSlot ? (
+        <>
+          <Message variant="danger">{errorCheckTimeSlot} </Message>
           <View>
             <Text
               style={{
@@ -95,47 +133,42 @@ const StartScreen = ({navigation, route}) => {
         </>
       ) : (
         <>
-          {update ? (
-            <>
-              <View
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'absolute',
+              top: 0,
+              marginTop: '8%',
+            }}>
+            <View>
+              <Text
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  top: 0,
-                  marginTop: '8%',
+                  fontSize: 20,
+                  fontFamily: 'sans-serif-light',
                 }}>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      fontFamily: 'sans-serif-light',
-                    }}>
-                    Press start button to start the survey
-                  </Text>
-                </View>
+                Press start button to start the survey
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.wrapper}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+              }}>
+              <View style={{flex: 1}}>
+                <Button
+                  onPress={navigate}
+                  style={styles.loginButton}
+                  title="START"
+                />
               </View>
-              <View style={styles.wrapper}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                  }}>
-                  <View style={{flex: 1}}>
-                    <Button
-                      onPress={navigate}
-                      style={styles.loginButton}
-                      title="START"
-                    />
-                  </View>
-                </View>
-              </View>
-            </>
-          ) : (
-            <></>
-          )}
+            </View>
+          </View>
         </>
       )}
     </View>

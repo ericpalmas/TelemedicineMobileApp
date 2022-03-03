@@ -22,10 +22,6 @@ app.use('/api/patients', patientRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/timeSlots', timeSlotRoutes);
 
-// app.get('/', function (req, res) {
-//   res.status(200).json({message: 'hello telemedicine'});
-// });
-
 app.use(notFound);
 app.use(errorHandler);
 

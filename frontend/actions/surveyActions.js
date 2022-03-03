@@ -46,7 +46,7 @@ export const sendAnswers = surveyAnswers => async dispatch => {
     // });
 
     const {data} = await axios.post(
-      `https://telemedicinemobile.herokuapp.com//api/surveys/`,
+      `https://telemedicinemobile.herokuapp.com/api/surveys/`,
       {
         surveyAnswers,
       },

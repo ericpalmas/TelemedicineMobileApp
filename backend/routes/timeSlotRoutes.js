@@ -5,9 +5,6 @@ const TimeSlot = require('../models/timeSlotModel');
 const SurveyResponse = require('../models/surveyResponseModel');
 const PatientDevice = require('../models/patientDeviceModel');
 
-var macaddress = require('macaddress');
-//var DeviceInfoModule = require('react-native-device-info');
-
 const modifySingleDigit = val => {
   if (/^\d$/.test(val)) {
     return '0' + val;
@@ -22,6 +19,8 @@ router.put(
       macAdress: uniqueId,
     });
 
+    console.log(patientByMacAddress);
+
     var today = new Date();
     var currentYear = today.getFullYear();
     var currentMonth = today.getMonth() + 1;
@@ -29,12 +28,18 @@ router.put(
     var currentHour = today.getHours();
     var currentMinute = today.getMinutes();
 
+    console.log(today);
+
     if (patientByMacAddress) {
       const lastResponse = await SurveyResponse.findOne({
         patient: patientByMacAddress.patient,
         survey: surveyId,
       }).sort({updatedAt: -1});
+
+      // last response date ha qualcosaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
       const lastResponseDate = new Date(lastResponse.updatedAt);
+
+      console.log(lastResponseDate);
 
       var lastResponseYear = lastResponseDate.getFullYear();
       var lastResponseMonth = lastResponseDate.getMonth() + 1;
@@ -44,8 +49,18 @@ router.put(
 
       const surveyTimeSlots = await TimeSlot.find({survey: surveyId});
 
+      console.log('surveyTimeSlots:' + surveyTimeSlots.length);
+
       var alreadyResponse = false;
       var inTimeSlot = false;
+
+      // if oggi > orario disponibile && oggi < orario disponibile
+      ///// if ultimaRisposta > orario disponibile && ultimaRisposta < orario disponibile
+      ////////// inTimeSlot = true, alreadyResponse = false
+      ///// else
+      ////////// inTimeSlot = true, alreadyResponse = true
+      // else
+      //// inTimeSlot = false, alreadyResponse = false
 
       for (var i = 0; i < surveyTimeSlots.length; i++) {
         // prima controllo che l'ora attuale sia accettabile controllando le fascie orarie del questionario
@@ -161,7 +176,15 @@ router.put(
             lastResponse.completed
           ) {
             alreadyResponse = true;
+          } else {
+            res.json({
+              alreadyResponse,
+              inTimeSlot,
+            });
+            break;
           }
+          console.log(alreadyResponse);
+          console.log(inTimeSlot);
         }
       }
 
