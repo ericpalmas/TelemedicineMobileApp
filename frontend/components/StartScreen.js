@@ -97,12 +97,6 @@ const StartScreen = ({navigation, route}) => {
     }
   }, [dispatch, survey, route.params?.completed]);
 
-  useEffect(() => {
-    console.log(survey.survey);
-    console.log(checkSlots.alreadyResponse);
-    console.log(checkSlots.inTimeSlot);
-  }, [survey, checkSlots]);
-
   return (
     <View style={styles.containerMain}>
       {loading || loadingCheckTimeSlot ? (
