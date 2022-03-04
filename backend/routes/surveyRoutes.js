@@ -46,6 +46,69 @@ router.post(
   }),
 );
 
+// router.get(
+//   '/patientSurvey/:id',
+//   asyncHandler(async (req, res) => {
+//     const patientByMacAddress = await PatientDevice.findOne({
+//       macAdress: req.params.id,
+//     });
+
+//     if (patientByMacAddress) {
+//       const lastSurvey = await SurveyResponse.find({
+//         patient: patientByMacAddress.patient,
+//         completed: false,
+//       })
+//         .sort({updatedAt: -1})
+//         .populate('survey', 'doctor')
+//         .findOne();
+
+//       var result = {};
+
+//       result.patientID = patientByMacAddress.patient;
+//       result.doctorID = lastSurvey.doctor;
+
+//       // query result are immutables
+//       result.survey = lastSurvey.survey._id;
+//       result.questions = [];
+//       var ress = await Question.find({survey: lastSurvey.survey._id}).populate(
+//         'survey',
+//       );
+
+//       for (var i = 0; i < ress.length; i++) {
+//         var question = {};
+//         question.answers = [];
+//         question.question = ress[i];
+//         result.questions.push(question);
+//       }
+
+//       if (result) {
+//         var idList = result.questions.map(q => q.question._id);
+//         if (idList) {
+//           var offeredAnswers = await OfferedAnswer.where('question').in(idList);
+//           if (offeredAnswers) {
+//             for (var i = 0; i < result.questions.length; i++) {
+//               var va = offeredAnswers.filter(
+//                 answer =>
+//                   JSON.stringify(answer.question) ===
+//                   JSON.stringify(result.questions[i].question._id),
+//               );
+//               result.questions[i].answers = va;
+//             }
+//           }
+
+//           res.json(result);
+//         }
+//       } else {
+//         res.status(404);
+//         throw new Error('Survey not found');
+//       }
+//     } else {
+//       res.status(404);
+//       throw new Error('uniqueId not found');
+//     }
+//   }),
+// );
+
 router.get(
   '/patientSurvey/:id',
   asyncHandler(async (req, res) => {
@@ -61,6 +124,8 @@ router.get(
         .sort({updatedAt: -1})
         .populate('survey', 'doctor')
         .findOne();
+
+      console.log(lastSurvey);
 
       var result = {};
 
