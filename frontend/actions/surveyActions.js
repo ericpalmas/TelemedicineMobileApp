@@ -12,13 +12,13 @@ export const surveyDetails = id => async dispatch => {
   try {
     dispatch({type: SURVEY_REQUEST});
 
-    // const {data} = await axios.get(
-    //   `http://192.168.1.103:5000/api/surveys/patientSurvey/${id}`,
-    // );
-
     const {data} = await axios.get(
-      `https://telemedicinemobile.herokuapp.com/api/surveys/patientSurvey/${id}`,
+      `http://192.168.1.103:5000/api/surveys/patientSurvey/${id}`,
     );
+
+    // const {data} = await axios.get(
+    //   `https://telemedicinemobile.herokuapp.com/api/surveys/patientSurvey/${id}`,
+    // );
 
     dispatch({
       type: SURVEY_SUCCESS,

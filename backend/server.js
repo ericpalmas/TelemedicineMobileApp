@@ -16,7 +16,7 @@ connectDB();
 
 app.use(express.json());
 app.get('/', function (req, res) {
-  res.status(200).json({message: 'hello telemedicine'});
+  res.status(200).json({message: 'telemedicine on'});
 });
 app.use('/api/patients', patientRoutes);
 app.use('/api/surveys', surveyRoutes);

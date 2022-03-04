@@ -49,10 +49,15 @@ router.put(
 
       const surveyTimeSlots = await TimeSlot.find({survey: surveyId});
 
+      console.log(surveyTimeSlots);
+
       console.log('surveyTimeSlots:' + surveyTimeSlots.length);
 
       var alreadyResponse = false;
       var inTimeSlot = false;
+
+      var finalAlreadyResponse = false;
+      var finalInTimeSlot = false;
 
       // if oggi > orario disponibile && oggi < orario disponibile
       ///// if ultimaRisposta > orario disponibile && ultimaRisposta < orario disponibile
@@ -63,6 +68,8 @@ router.put(
       //// inTimeSlot = false, alreadyResponse = false
 
       for (var i = 0; i < surveyTimeSlots.length; i++) {
+        alreadyResponse = false;
+        inTimeSlot = false;
         // prima controllo che l'ora attuale sia accettabile controllando le fascie orarie del questionario
         if (
           Date.parse(
@@ -119,7 +126,6 @@ router.put(
               1000
         ) {
           // ora controllo che all'interno di quella fascia oraria non ci sia già una risposta
-          inTimeSlot = true;
           if (
             Date.parse(
               modifySingleDigit(lastResponseYear) +
@@ -175,23 +181,34 @@ router.put(
                 1000 &&
             lastResponse.completed
           ) {
+            inTimeSlot = true;
             alreadyResponse = true;
           } else {
-            res.json({
-              alreadyResponse,
-              inTimeSlot,
-            });
-            break;
+            inTimeSlot = true;
+            alreadyResponse = false;
+
+            finalInTimeSlot = true;
+            finalAlreadyResponse = false;
           }
-          console.log(alreadyResponse);
-          console.log(inTimeSlot);
+        } else {
+          inTimeSlot = false;
+          alreadyResponse = false;
         }
+        console.log(alreadyResponse);
+        console.log(inTimeSlot);
       }
 
-      res.json({
-        alreadyResponse,
-        inTimeSlot,
-      });
+      if (finalInTimeSlot && !finalAlreadyResponse) {
+        res.json({
+          alreadyResponse: false,
+          inTimeSlot: true,
+        });
+      } else {
+        res.json({
+          alreadyResponse,
+          inTimeSlot,
+        });
+      }
     }
   }),
 );
