@@ -59,14 +59,6 @@ router.put(
       var finalAlreadyResponse = false;
       var finalInTimeSlot = false;
 
-      // if oggi > orario disponibile && oggi < orario disponibile
-      ///// if ultimaRisposta > orario disponibile && ultimaRisposta < orario disponibile
-      ////////// inTimeSlot = true, alreadyResponse = false
-      ///// else
-      ////////// inTimeSlot = true, alreadyResponse = true
-      // else
-      //// inTimeSlot = false, alreadyResponse = false
-
       for (var i = 0; i < surveyTimeSlots.length; i++) {
         alreadyResponse = false;
         inTimeSlot = false;
@@ -194,8 +186,6 @@ router.put(
           inTimeSlot = false;
           alreadyResponse = false;
         }
-        console.log(alreadyResponse);
-        console.log(inTimeSlot);
       }
 
       if (finalInTimeSlot && !finalAlreadyResponse) {
